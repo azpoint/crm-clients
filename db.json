@@ -1,0 +1,47 @@
+{
+  "clients": [
+    {
+      "id": 1,
+      "nombre": "Juan",
+      "telefono": 102013313,
+      "email": "juan@3m.com",
+      "empresa": "3M"
+    },
+    {
+      "id": 2,
+      "nombre": "Karen",
+      "telefono": 138198313,
+      "email": "karen@pfizer.com",
+      "empresa": "Pfizer"
+    },
+    {
+      "id": 3,
+      "nombre": "Josue",
+      "telefono": 31983913,
+      "email": "josue@mdn.com",
+      "empresa": "MDN"
+    },
+    {
+      "id": 4,
+      "nombre": "Miguel",
+      "telefono": 319381983,
+      "email": "miguel@foxcom.com",
+      "empresa": "FOXCOM"
+    },
+    {
+      "id": 5,
+      "nombre": "Pedro",
+      "telefono": 1398198938,
+      "email": "pedro@alphabet.com",
+      "empresa": "Alphabet"
+    },
+    {
+      "nombre": "Alejandro",
+      "empresa": "BB DEV",
+      "email": "alejo@mail.com",
+      "telefono": "555556",
+      "notas": "aweno",
+      "id": 6
+    }
+  ]
+}

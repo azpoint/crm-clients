@@ -1,22 +1,29 @@
-/* eslint-disable no-control-regex */
-import { useNavigate, Form, useActionData, redirect } from "react-router-dom";
-import { addClient } from "../api/clients";
+import { Form, useNavigate, useLoaderData, useActionData, redirect } from "react-router-dom";
+import { getClient, updateClient } from "../api/clients";
 
-//Components
 import ClientForm from "../components/ClientForm";
+
 import Error from "../components/Error";
 
-export async function action({ request }) {
-    const formData = await request.formData();
+
+export async function loader({ params }) {
+
+    const client = await getClient(params.clientID);
+
+    if (Object.values(client).length === 0) {
+        throw new Response("", {
+            status: 404,
+            statusText: "Client does no exist",
+        });
+    }
+
+    return client;
+}
+
+export async function action({request, params}) {
+  const formData = await request.formData();
 
     const data = Object.fromEntries(formData);
-
-    //Get value in fields form with router-dom
-    // console.log(formData.get("nombre"))
-    // console.log([...formData])
-    // const formDatas = Object.fromEntries(formData)
-    // console.log(formDatas)
-
 
     const email = formData.get("email")
 
@@ -36,23 +43,24 @@ export async function action({ request }) {
       return errors
     }
 
-    //Add client
+    //Update Client
 
-    await addClient(data)
+    await updateClient(params.clientID, data)
 
     return redirect("/");
 }
 
-function NewClient() {
-    const navigate = useNavigate();
 
+
+function EditClient() {
+    const navigate = useNavigate()
+    const client = useLoaderData()
     const errors = useActionData()
-
 
     return (
         <>
-            <h1 className="font-bold text-blue-900 text-4xl">New Client</h1>
-            <p className="mt-3">All fields must be completed</p>
+            <h1 className="font-bold text-blue-900 text-4xl">Edit Client</h1>
+            <p className="mt-3">Fix what you need</p>
 
             <div className="flex justify-end">
                 <button
@@ -65,10 +73,11 @@ function NewClient() {
 
             <Form method="post" noValidate>
                 <div className="bg-gray-100 rounded-md shadow md:w-3/4 mx-auto px-5 py-10 mt-10">
-                    <ClientForm />
-                    {errors?.length && errors.map((err, index) => (
-                      <Error key={index}>{err}</Error>
-                    ))}
+                    <ClientForm client={client}/>
+                    {errors?.length &&
+                        errors.map((err, index) => (
+                            <Error key={index}>{err}</Error>
+                        ))}
                     <input
                         type="submit"
                         className="mt-5 w-full bg-blue-800 p-3 uppercase font-semibold text-gray-50 text-lg"
@@ -79,6 +88,4 @@ function NewClient() {
         </>
     );
 }
-export default NewClient;
-
-// navigate(-1) goes to the previous page
+export default EditClient;
